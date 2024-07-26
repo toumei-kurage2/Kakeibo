@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css'%}">
+<meta charset="utf-8">
+<title>新規登録</title>
+</head>
+<body>
+<div class="link_button">
+<button onclick="location.href='{% url 'table'%}'" class="table_button">家計簿表</button>
+<button onclick="location.href='{% url 'register'%}'" class="sinki_button">新規登録</button>
+<button onclick="location.href='{% url 'list'%}'" class="list_button">登録一覧</button>
+</div>
+<hr>
+<div class="gamen">
+<h1 class="page_title">新規登録</h1>
+<form method="post" class="add_update_form">
+    {% csrf_token %}
+    <table cellspacing="20">
+    {{form.as_table}}
+    </table>
+    <br>
+    <input type="submit" value="register" id="add_update_button"><br><br><br>
+
+</form>
+</div>
+</body>
+</html>

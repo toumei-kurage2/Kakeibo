@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css'%}">
+<meta charset="utf-8">
+<title>home</title>
+</head>
+<body>
+<div class="link_button">
+<button onclick="location.href='{% url 'table'%}'" class="table_button">家計簿表</button>
+<button onclick="location.href='{% url 'register'%}'" class="sinki_button">新規登録</button>
+<button onclick="location.href='{% url 'list'%}'" class="list_button">登録一覧</button>
+</div>
+<hr>
+{% load humanize %}
+<div class="gamen">
+<h1 class="page_title">家計簿表&nbsp;&nbsp;&nbsp;{{year}}年{{month}}月</h1>
+<div class="yoko">
+<form method="POST">
+{% csrf_token %}
+<div class="YMform">
+年：{{ form.year }}&nbsp;&nbsp;&nbsp;月：{{ form.month }}
+<input type="submit" value="send" id="send_button">
+</div>
+</form>
+<div class="raigetu">来月おろす金額:{{ raigetu|intcomma }}円</div>
+</div>
+<br>
+<table class="flat-table">
+    <thead>
+        <tr bgcolor="pink">
+            <th class="fixed-row">項目</th>
+            {% for koumoku in koumokulist %}
+            <th class="fixed-row">{{ koumoku.Koumoku_name }}</th>
+            {% endfor %}
+            <th class="fixed-row">合計</th>
+        </tr>
+        <tr>
+            <th class="fixed-row2">予算</th>
+            {% for koumoku in koumokulist %}
+            <th align="right" class="fixed-row2">{{ koumoku.yosan|intcomma }}</th>
+            {% endfor %}
+            <th align="right" class="fixed-row2">{{ yosan_sum|intcomma }}</th> 
+        </tr>
+    </thead>
+    <tbody>
+    
+    {% for youso in list1 %}
+    <tr>
+    <th>{{ forloop.counter }}日</th>
+    {% for masu in youso %}
+    <td align="right">{{ masu|intcomma }}</td>
+    {% endfor %}
+    </tr>
+    {% endfor %}
+    <tr>
+    <th>合計</th>
+    {% for sum in sumlist %}
+    <td align="right">{{ sum|intcomma }}</td>
+    {% endfor %}
+    </tr>
+    <th>繰越</th>
+    {% for kurikosi in kurikosilist %}
+    {% if kurikosi < 0 %}
+    <td align="right"><font color="red">{{ kurikosi|intcomma }}</font></td>
+    {% else %}
+    <td align="right">{{ kurikosi|intcomma }}</td>
+    {% endif %}
+    {% endfor %}
+    </tr>
+    </tbody>
+</table>
+</div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css'%}">
+<meta charset="utf-8">
+<title>登録一覧</title>
+</head>
+<body>
+<div class="link_button">
+<button onclick="location.href='{% url 'table'%}'" class="table_button">家計簿表</button>
+<button onclick="location.href='{% url 'register'%}'" class="sinki_button">新規登録</button>
+<button onclick="location.href='{% url 'list'%}'" class="list_button">登録一覧</button>
+</div>
+<hr>
+{% load humanize %}
+<div class="gamen">
+<h1 class="page_title">登録一覧&nbsp;&nbsp;&nbsp;{{ year }}年{{ month }}月</h1>
+<form method="POST">
+{% csrf_token %}
+<div class="YMform">
+年：{{ form.year }}&nbsp;&nbsp;&nbsp;月：{{ form.month }}
+<input type="submit" value="send" id="send_button">
+</div>
+</form>
+<br>
+<table class="flat-table">
+<thead>
+<tr>
+<th class="fixed-row">使用日</th>
+<th class="fixed-row">項目名</th>
+<th class="fixed-row">金額</th>
+<th colspan="2" class="fixed-row">編集</th>
+</tr>
+</thead>
+<tbody>
+{% for record in rireki %}
+<tr>
+<td align="left">{{ record.date }}</td><td align="left">{{ record.koumoku }}</td><td align="right">{{ record.fee|intcomma }}</td>
+<td><a id="a_button" href="{% url 'update' record.pk %}">更新</a></td>
+<td><a id="a_button" href="{% url 'delete' record.pk %}">削除</a></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</body>
+</html>
